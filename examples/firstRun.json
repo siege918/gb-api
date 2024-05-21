@@ -1,0 +1,17 @@
+[
+    {
+        "note": "Waiting for start screen",
+        "keys": [],
+        "frames": 3600
+    },
+    {
+        "note": "Press start and wait for main menu",
+        "keys": ["START"],
+        "frames": 240
+    },
+    {
+        "note": "Press New Game or Continue",
+        "keys": ["A"],
+        "frames": 120
+    }
+]

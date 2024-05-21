@@ -1,0 +1,20 @@
+{
+  "name": "gb-api",
+  "version": "1.0.0",
+  "description": "An api for interacting with a gameboy emulator",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "help": "node src/index.js --help",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "argparse": "^2.0.1",
+    "express": "^4.19.2",
+    "pngjs": "^7.0.0",
+    "wasmboy": "^0.7.1"
+  }
+}

@@ -81,6 +81,23 @@ await init(args);
 const app = express();
 app.use(express.json());
 
+app.get('/', async (req, res) => {
+
+  const imageData = await getImageDataFromFrame();
+
+  //write to PNG (using pngjs)
+  var png = new PNG({ width: 160, height: 144 });
+  png.data = imageData;
+
+  var buffer = PNG.sync.write(png, { colorType: 0 });
+
+  res.writeHead(200, {
+    'Content-Type': 'image/png',
+    'Content-Length': buffer.length
+  });
+  res.end(buffer);
+});
+
 app.post('/tick', async (req, res) => {
   requestCount++;
   const { frames, keys } = req.body;

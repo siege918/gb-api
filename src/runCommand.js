@@ -24,6 +24,8 @@ export default async function runCommand(command) {
 
     await setJoypadState(keyConfig);
 
+    const framesHeld = command.framesHeld ?? 5;
+
     
     for (var j = 0; j < command.frames; j++) {
         if (j % 10 === 0) {
@@ -31,6 +33,8 @@ export default async function runCommand(command) {
         }
         await WasmBoy._runWasmExport('hasCoreStarted', []);
         await WasmBoy._runWasmExport('executeFrame', []);
-        await setJoypadState({});
+        if (j >= framesHeld) {
+            await setJoypadState({});
+        }
     }
 }

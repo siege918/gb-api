@@ -1,4 +1,4 @@
-import { writeFileSync, copyFileSync, stat, existsSync, mkdirSync } from "fs";
+import { copyFileSync, existsSync, mkdirSync } from "fs";
 import { PNG } from "pngjs";
 import express from 'express';
 
@@ -8,6 +8,7 @@ import init from './init.js';
 import runCommand from "./runCommand.js";
 import getImageDataFromFrame from "./getImageDataFromFrame.js";
 import { saveState } from "./state.js";
+import getMemoryRange from "./getMemoryRange.js";
 
 const parser = new ArgumentParser({
   prog: 'npm run start -- --',
@@ -96,6 +97,23 @@ app.get('/', async (req, res) => {
     'Content-Length': buffer.length
   });
   res.end(buffer);
+});
+
+app.get('/memory/:startString/:endString', async (req, res) => {
+  const { startString, endString } = req.params;
+
+  const start = Number(`0x${startString}`);
+  const end = endString ? Number(`0x${endString}`) : start;
+
+  if (start > end) {
+    res.status(400).send('{ "error": "End must be greater than or equal to start" }');
+  }
+
+  if (start < 0xC000 || end < 0xC000 || start > 0xDFFF || end > 0xDFFF) {
+    res.status(400).send('{ "error": "Memory section must be between C000 and DFFF" }');
+  }
+
+  res.status(200).send(JSON.stringify(await getMemoryRange(start, end)));
 });
 
 app.post('/tick', async (req, res) => {
